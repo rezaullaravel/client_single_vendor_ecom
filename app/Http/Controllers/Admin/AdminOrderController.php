@@ -114,4 +114,19 @@ public function updateStatus(Request $request){
         $order->delete();
         return redirect()->back()->with('message','Order deleted successfully');
     }//end method
+
+
+    //order invoice
+    public function orderInvoice($id){
+        $order = Order::find($id);
+        $mpdf = new \Mpdf\Mpdf();
+       $mpdf->WriteHTML($this->pdfHtml($order));
+       $mpdf->Output();
+
+    }//end method
+
+    public function pdfHtml($order){
+
+        return view('admin.order.order_invoice',compact('order'));
+    }
 }//end method

@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\AdminContactMessageController;
 
 Auth::routes();
 
+//user dashboard
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
@@ -132,6 +133,8 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/order/details/{id}',[AdminOrderController::class,'orderDetails'])->name('admin.order-details');
     Route::get('/order/delete/{id}',[AdminOrderController::class,'orderDelete'])->name('admin.order-delete');
     Route::post('/update-order-status', [AdminOrderController::class, 'updateStatus'])->name('update.order.status');
+    Route::get('/order/invoice/{id}',[AdminOrderController::class,'orderInvoice'])->name('admin.order-invoice');
+
 
 
     //contact message

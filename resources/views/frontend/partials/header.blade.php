@@ -121,7 +121,7 @@ body, div, a, button {
 <div class="header">
     <div class="header-top">
        <div class="container">
-          <div class="top-left">
+          <div class="top-left col-md-4">
              <a href="#"> Help  <i class="glyphicon glyphicon-phone" aria-hidden="true"></i> +0123-456-789</a>
           </div>
           <div class="top-middle">

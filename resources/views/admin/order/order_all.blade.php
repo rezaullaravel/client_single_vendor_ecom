@@ -67,7 +67,7 @@
                                     <th class="text-center">Order Id</th>
                                     <th class="text-center">Date</th>
                                     <th class="text-center">Status</th>
-                                    <th class="text-center" width="60">Action</th>
+                                    <th class="text-center" width="100">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -92,6 +92,8 @@
 
                                     <td>
                                         <a href="{{ route('admin.order-details',$row->id) }}" class="btn btn-success btn-sm" title="View order details"><i class="fa fa-eye"></i></a>
+
+                                        <a href="{{ route('admin.order-invoice',$row->id) }}" class="btn btn-primary btn-sm" title="Invoice" target="_blank"><i class="las la-download"></i></a>
 
                                         <a href="{{ route('admin.order-delete',$row->id) }}" class="btn btn-danger btn-sm" onclick="confirmation(event)" title="delete"><i class="fa fa-trash"></i></a>
 

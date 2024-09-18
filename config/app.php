@@ -177,6 +177,9 @@ return [
         //image intervention
         Intervention\Image\ImageServiceProvider::class,
 
+        //mpdf
+        Mccarlosen\LaravelMpdf\LaravelMpdfServiceProvider::class,
+
     ],
 
     /*
@@ -234,6 +237,9 @@ return [
 
         //image intervention
         'Image' => Intervention\Image\Facades\Image::class,
+
+        //mpdf
+        'PDF' => Mccarlosen\LaravelMpdf\Facades\LaravelMpdf::class,
 
     ],
 
