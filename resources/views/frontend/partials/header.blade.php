@@ -115,9 +115,17 @@ body, div, a, button {
     }
 }
 
-
-
 </style>
+
+<style>
+    .multi-column-dropdown li a:hover {
+    color: #fff !important; /* Change text color on hover */
+    background-color: #007bff; /* Add background color on hover */
+}
+</style>
+
+
+
 <div class="header">
     <div class="header-top">
        <div class="container">
@@ -149,46 +157,57 @@ body, div, a, button {
              <div class="logo-nav-left">
                 <h1><a href="{{ url('/') }}">My Shop <span>Shop anywhere</span></a></h1>
              </div>
-             <div class="logo-nav-left1">
-                <nav class="navbar navbar-default">
-                   <!-- Brand and toggle get grouped for better mobile display -->
-                   <div class="navbar-header nav_2">
-                      <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      </button>
-                   </div>
-                   <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
-                      <ul class="nav navbar-nav">
-                         <li class="active"><a href="{{ url('/') }}" class="act">Home</a></li>
-                         <!-- Mega Menu -->
-                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories<b class="caret"></b></a>
-                            <ul class="dropdown-menu multi-column columns-3">
-                               <div class="row">
-                                @php
-                                    $categories = App\Models\Category::all();
-                                @endphp
-                                  <div class="col-sm-3 col-xs-3">
-                                     <ul class="multi-column-dropdown">
-                                        @foreach ($categories as $category)
-                                          <li><a href="{{ route('category-wise.product.show',$category->id) }}">{{ $category->category_name }}</a></li>
-                                        @endforeach
-                                     </ul>
-                                  </div>
-                                  <div class="clearfix"></div>
-                               </div>
-                            </ul>
-                         </li>
-                         <li><a href="{{ route('about') }}">About Us</a></li>
-                         <li><a href="{{ route('contact') }}">Contact Us</a></li>
-                         <li><a href="{{ route('order.track') }}">Order Tracking</a></li>
-                      </ul>
-                   </div>
-                </nav>
-             </div>
+               <div class="logo-nav-left1">
+                    <nav class="navbar navbar-default">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header nav_2">
+                        <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="{{ url('/') }}" class="act">Home</a></li>
+                            <!-- Mega Menu -->
+                            @php
+                            $categories = App\Models\Category::all();
+                            @endphp
+
+                                @foreach ($categories as $category)
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ $category->category_name }}
+                                        @if (!empty($category->subcategories) && $category->subcategories->count() > 0)
+                                            <b class="caret"></b>
+                                        @endif
+                                    </a>
+
+                                    @if (!empty($category->subcategories) && $category->subcategories->count() > 0)
+                                        <ul class="dropdown-menu multi-column columns-3">
+                                            <div class="row">
+                                                <div class="col-sm-3 col-xs-3">
+                                                    <ul class="multi-column-dropdown">
+                                                        @foreach ($category->subcategories as $subcategory)
+                                                            <li><a href="{{ route('subcategory-wise.product.show',$subcategory->id) }}">{{ $subcategory->subcategory_name }}</a></li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </ul>
+                                    @endif
+                                </li>
+                                @endforeach
+                        </ul>
+                    </div>
+                    </nav>
+               </div>
+
+
+
+
 
              <div class="header-right2">
                 <div class="cart box_1">

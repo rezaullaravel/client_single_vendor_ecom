@@ -2462,7 +2462,7 @@ li.bt-nn h6 {
 }
 @media (max-width: 1024px){
 .dropdown-menu.columns-3 {
-    left: -240%;
+    left: -142%;
 }
 .ribben {
     left: -4%;
@@ -2494,7 +2494,7 @@ li.bt-nn h6 {
     font-size: 12px;
 }
 .dropdown-menu.columns-3 {
-    left: -355%;
+    left: -128%;
 }
 .top-right ul li a {
     font-size: 0.95em;
@@ -2709,6 +2709,7 @@ ul.multi-column-dropdown h6 {
 .dropdown-menu.columns-3 {
     min-width: 610px;
     padding: 30px 30px;
+    padding-left: 218px;
 }
 .main-agileits {
     width: 52%;
@@ -2754,6 +2755,7 @@ ul.multi-column-dropdown h6 {
 .dropdown-menu.columns-3 {
     min-width: 263px;
     padding: 30px 30px;
+    padding-left: 7px;
 }
 .multi-gd-img {
     float: left;

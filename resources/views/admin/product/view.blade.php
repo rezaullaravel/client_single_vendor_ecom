@@ -30,6 +30,12 @@
                                     </tr>
 
                                     <tr>
+                                        <th width="20%" class="text-center">Subcategory</th>
+                                        <td>{{ $product->subcategory->subcategory_name }}</td>
+                                    </tr>
+
+
+                                    <tr>
                                         <th width="20%" class="text-center">Brand</th>
                                         <td>{{ $product->brand->brand_name }}</td>
                                     </tr>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Brand;
+use App\Models\Color;
 use App\Models\Review;
 use App\Models\Product;
 use App\Models\Category;
@@ -44,17 +45,77 @@ class FrontendHomeController extends Controller
     }//end method
 
 
-    //category wise product show
-    public function categoryWiseProductShow($id){
-        $category = Category::where('id',$id)->first();
-        $products = Product::where('category_id',$id)->limit(8)->paginate(30);
+    // //subcategory wise product show
+    // public function subcategoryWiseProductShow($id){
+    //             // Find the subcategory
+    //         $subcategory = Subcategory::find($id);
 
-         // Get the unique brand IDs associated with the products in that category
-         $getBrands = Product::where('category_id', $id)->pluck('brand_id')->unique();
+    //         // Get the category associated with the subcategory
+    //         $category = Category::where('id', $subcategory->category_id)->first();
 
-         // Fetch the brands using the unique brand IDs
-         $brands = Brand::whereIn('id', $getBrands)->get();
-        return view('frontend.product.categorywise_product_show',compact('products','category','brands'));
+    //         // Fetch all subcategories under the same category
+    //         $subcategories = Subcategory::where('category_id', $subcategory->category_id)->get();
+
+    //         // Fetch products based on subcategory_id and paginate them
+    //         $products = Product::where('subcategory_id', $id)->paginate(30);
+
+    //         // Get the unique brand IDs associated with the products in that subcategory
+    //         $getBrands = $products->pluck('brand_id')->unique();
+
+    //         // Fetch the brands using the unique brand IDs
+    //         $brands = Brand::whereIn('id', $getBrands)->get();
+
+
+    //         $getProductIds = $products->pluck('id');
+    //         // Fetch the colors associated with those products using the color_products table
+    //         $colors = Color::whereIn('id', function ($query) use ($getProductIds) {
+    //             $query->select('color_id')
+    //                 ->from('color_products')
+    //                 ->whereIn('product_id', $getProductIds);
+    //         })->get();
+
+    //     return view('frontend.product.subcategorywise_product_show',compact('products','category','subcategory','brands','subcategories','colors'));
+    // }//end method
+
+    //sub category wise product
+    public function subcategoryWiseProductShow($id){
+        // Find the subcategory
+        $subcategory = Subcategory::find($id);
+
+        // Get the category associated with the subcategory
+        $category = Category::where('id', $subcategory->category_id)->first();
+
+        // Fetch all subcategories under the same category
+        $subcategories = Subcategory::where('category_id', $subcategory->category_id)->get();
+
+        // Fetch products based on subcategory_id (subcategory-specific products)
+        $products = Product::where('subcategory_id', $id)->paginate(30);
+
+        // Fetch all products under the entire category (to get brands and colors for all category products)
+        $categoryProductIds = Product::where('category_id', $subcategory->category_id)->pluck('id');
+
+        // Fetch unique brand IDs associated with the products in the entire category
+        $getBrands = Product::whereIn('id', $categoryProductIds)->pluck('brand_id')->unique();
+
+        // Fetch the brands using the unique brand IDs
+        $brands = Brand::whereIn('id', $getBrands)->get();
+
+        // Fetch colors associated with the products in the entire category using the color_products table
+        $colors = Color::whereIn('id', function ($query) use ($categoryProductIds) {
+            $query->select('color_id')
+                ->from('color_products')
+                ->whereIn('product_id', $categoryProductIds);
+        })->get();
+
+        // Pass all data to the view, including subcategory-specific products
+        return view('frontend.product.subcategorywise_product_show', compact(
+            'products', // Specific products for the subcategory
+            'category',            // The category object
+            'subcategory',         // The subcategory object
+            'brands',              // All brands associated with the category
+            'subcategories',       // All subcategories under the category
+            'colors'               // All colors associated with the category's products
+        ));
     }//end method
 
 
@@ -63,10 +124,16 @@ class FrontendHomeController extends Controller
     {
         $query = Product::query();
 
-        // Filter by category
-        if (!empty($request->category_id)) {
+
+
+        if(!empty($request->category_id)){
             $query->where('category_id', $request->category_id);
-            $category = Category::findOrFail($request->category_id);
+            $category = Category::where('id',$request->category_id)->first();
+        }
+
+        // Filter by subcategories
+        if (!empty($request->subcats)) {
+            $query->whereIn('subcategory_id', $request->subcats);
         }
 
         // Filter by price range
@@ -78,6 +145,14 @@ class FrontendHomeController extends Controller
         if (!empty($request->brands)) {
             $query->whereIn('brand_id', $request->brands);
         }
+
+
+        // Apply a condition to filter by color
+        if ($request->has('color') && $request->input('color') !== 'null') {
+            $query->join('color_products', 'products.id', '=', 'color_products.product_id')->where('color_products.color_id', $request->input('color'));
+        }
+        // Ensure products are distinct to avoid duplicates
+        $query->distinct('products.id');
 
         // Sorting
         if (!empty($request->sort)) {
@@ -92,24 +167,34 @@ class FrontendHomeController extends Controller
         // Pagination
         $products = $query->paginate(30);
 
-        // Get the unique brand IDs associated with the filtered products
+        // Get brands for the current category
         $getBrands = Product::where('category_id', $request->category_id)
                             ->pluck('brand_id')
                             ->unique();
-
-        // Fetch the brands using the unique brand IDs
         $brands = Brand::whereIn('id', $getBrands)->get();
+
+        // Get all colors used in the category products
+        $colorProductIds = Product::where('category_id', $request->category_id)->pluck('id');
+        $colors = Color::whereIn('id', function ($query) use ($colorProductIds) {
+            $query->select('color_id')
+                  ->from('color_products')
+                  ->whereIn('product_id', $colorProductIds);
+        })->get();
 
         // Check if request is an AJAX call
         if ($request->ajax()) {
-            return view('frontend.product.partials.filter_products', compact('products', 'category', 'brands'))->render();
+             return view('frontend.product.partials.filter_products', compact('products', 'category', 'brands', 'colors'))->render();
         }
 
-        // For non-AJAX requests (full page reload)
-        return view('frontend.product.categorywise_product_show', compact('products', 'category', 'brands'));
+        // For non-AJAX requests (initial page load)
+        return view('frontend.product.subcategorywise_product_show', compact('products', 'category', 'brands', 'colors'));
     }
 
+
+
 //end method
+
+
 
 
 //product search

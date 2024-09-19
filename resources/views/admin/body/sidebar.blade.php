@@ -58,6 +58,31 @@
           </li>
 
 
+          <li class="nav-item {{ (request()->is('admin/subcategory*')) ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ (request()->is('admin/subcategory*')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-solid fa-layer-group"></i>
+              <p>
+                SubCategory
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="{{ (request()->is('admin/subcategory*')) ? 'display:block; overflow:hidden;' : 'display:none; overflow:hidden;' }} ">
+              <li class="nav-item">
+                <a  href="{{ route('admin.subcategory.add') }}"  class=" nav-link {{ (request()->is('admin/subcategory/add')) ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Subcategory</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('admin.subcategory.manage') }}" class="nav-link {{ (request()->is('admin/subcategory/manage')) ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Subcategory</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+
 
           <li class="nav-item {{ (request()->is('admin/brand*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->is('admin/brand*')) ? 'active' : '' }}">

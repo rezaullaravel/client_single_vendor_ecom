@@ -67,7 +67,7 @@
 
 
                            <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                <div class="form-group">
                                    <label>Category<span class="text-danger">*</span></label>
                                    <select name="category_id" class="form-control">
@@ -89,7 +89,30 @@
                                </div>
                             </div>
 
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Subcategory<span class="text-danger">*</span></label>
+                                    <select name="subcategory_id" class="form-control">
+                                        <option value="" selected disabled>Select</option>
+                                        @foreach ($categories as $category)
+                                          @if ($product->category_id==$category->id)
+                                               @foreach ($category->subcategories as $subcategory)
+                                                   <option value="{{ $subcategory->id }}" {{ $product->subcategory_id==$subcategory->id ? 'selected' : '' }}>{{ $subcategory->subcategory_name }}</option>
+                                               @endforeach
+
+                                          @endif
+                                        @endforeach
+
+                                    </select>
+
+                                    @error('subcategory_id')
+                                    <span class="text-danger">{{ $message }}</span>
+
+                                    @enderror
+                                </div>
+                             </div>
+
+                            <div class="col-sm-4">
                                <div class="form-group">
                                    <label>Brand<span class="text-danger">*</span></label>
                                    <select name="brand_id" class="form-control">
@@ -392,31 +415,6 @@
 {{-- javascript for sub category auto select end --}}
 
 
-{{-- javascript for child category auto select --}}
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('select[name="subcategory_id"]').on('change',function(){
-            var subcategory_id=$(this).val();
-            if(subcategory_id){
-                $.ajax({
-                    url:"{{ url('/admin/subcategory/childcategory/ajax') }}/"+subcategory_id,
-                    type:"GET",
-                    dataType:"json",
-                    success:function(data){
-                        var d=$('select[name="childcategory_id"]').empty();
-                        $.each(data,function(key,value){
-                            $('select[name="childcategory_id"]').append(
-                                '<option value="'+value.id+'">'+
-                                value.childcategory_name+'</option>');
-                        });
-                    },
-                });
-            }else{
-                alert('danger');
-            }
-        });
-    });
-</script>
-{{-- javascript for child category auto select end --}}
+
 
 @endsection

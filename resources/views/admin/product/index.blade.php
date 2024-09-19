@@ -52,6 +52,7 @@
                                         <th class="text-center">Sl no.</th>
                                         <th class="text-center">Product Name</th>
                                         <th class="text-center">Category</th>
+                                        <th class="text-center">Subcategory</th>
                                         <th class="text-center">Brand</th>
                                         <th class="text-center">Status</th>
                                         <th class="text-center">Featured</th>
@@ -67,6 +68,7 @@
                                         <td>{{ $key+1 }}</td>
                                        <td>{{ $product->name }}</td>
                                        <td>{{ $product->category->category_name }}</td>
+                                       <td>{{ $product->subcategory->subcategory_name }}</td>
 
                                        <td>{{ $product->brand->brand_name }}</td>
                                        <td>

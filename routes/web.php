@@ -16,6 +16,7 @@ use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Frontend\MyorderController;
 use App\Http\Controllers\Admin\PickupPointController;
+use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Admin\DeliveryChargeController;
 use App\Http\Controllers\Frontend\FrontContactController;
@@ -55,6 +56,18 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/category/delete/{id}',[CategoryController::class,'deleteCategory'])->name('admin.category.delete');
     Route::get('/category/edit/{id}',[CategoryController::class,'editCategory'])->name('admin.category.edit');
     Route::post('/category/update',[CategoryController::class,'updateCategory'])->name('admin.category.update');
+
+
+     //subcategory
+     Route::get('/subcategory/add',[SubcategoryController::class,'add'])->name('admin.subcategory.add');
+     Route::post('/subcategory/store',[SubcategoryController::class,'store'])->name('admin.subcategory.store');
+     Route::get('/subcategory/manage',[SubcategoryController::class,'index'])->name('admin.subcategory.manage');
+     Route::get('/subcategory/edit/{id}',[SubcategoryController::class,'edit'])->name('admin.subcategory.edit');
+     Route::post('/subcategory/update',[SubcategoryController::class,'update'])->name('admin.subcategory.update');
+     Route::get('/subcategory/delete/{id}',[SubcategoryController::class,'delete'])->name('admin.subcategory.delete');
+
+     //global route
+    Route::get('/category/subcategory/ajax/{category_id}',[SubcategoryController::class,'subcategoryAutoSelect']);
 
 
 
@@ -162,7 +175,7 @@ Route::get('/about-us',[FrontendHomeController::class,'aboutUs'])->name('about')
 Route::get('/product/single/{id}',[FrontendHomeController::class,'productSingle']);
 
 //category wise product view
-Route::get('/category-wise/product/show/{id}',[FrontendHomeController::class,'categoryWiseProductShow'])->name('category-wise.product.show');
+Route::get('/subcategory-wise/product/show/{id}',[FrontendHomeController::class,'subcategoryWiseProductShow'])->name('subcategory-wise.product.show');
 
 //product filter
 Route::get('/products/filter', [FrontendHomeController::class, 'filter'])->name('products.filter');

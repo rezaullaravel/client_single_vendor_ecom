@@ -19,6 +19,10 @@ public function category(){
     return $this->belongsTo(Category::class)->withDefault();
 }
 
+public function subcategory(){
+    return $this->belongsTo(Subcategory::class,'subcategory_id')->withDefault();
+}
+
 
 
 public function brand(){

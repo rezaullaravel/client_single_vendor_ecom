@@ -64,7 +64,7 @@
                         <div class="card-body">
 
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                    <div class="form-group">
                                        <label>Category<span class="text-danger">*</span></label>
                                        <select name="category_id" class="form-control">
@@ -81,7 +81,22 @@
                                    </div>
                                 </div>
 
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Subcategory<span class="text-danger">*</span></label>
+                                        <select name="subcategory_id" class="form-control">
+                                            <option value="" selected disabled>Select</option>
+
+                                        </select>
+
+                                        @error('subcategory_id')
+                                        <span class="text-danger">{{ $message }}</span>
+
+                                        @enderror
+                                    </div>
+                                 </div>
+
+                                <div class="col-sm-4">
                                    <div class="form-group">
                                        <label>Brand<span class="text-danger">*</span></label>
                                        <select name="brand_id" class="form-control">
@@ -331,6 +346,34 @@
  <script type="text/javascript">
     CKEDITOR.replace('description_editor');
 </script>
+
+
+{{-- javascript for sub category auto select --}}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('select[name="category_id"]').on('change',function(){
+            var category_id=$(this).val();
+            if(category_id){
+                $.ajax({
+                    url:"{{ url('/admin/category/subcategory/ajax') }}/"+category_id,
+                    type:"GET",
+                    dataType:"json",
+                    success:function(data){
+                        var d=$('select[name="subcategory_id"]').empty();
+                        $.each(data,function(key,value){
+                            $('select[name="subcategory_id"]').append(
+                                '<option value="'+value.id+'">'+
+                                value.subcategory_name+'</option>');
+                        });
+                    },
+                });
+            }else{
+                alert('danger');
+            }
+        });
+    });
+</script>
+{{-- javascript for sub category auto select end --}}
 
 
 

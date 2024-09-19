@@ -29,6 +29,7 @@ class ProductController extends Controller
 
         $request->validate([
             'category_id' => 'required',
+            'subcategory_id'=>'required',
             'brand_id' => 'required',
             'name' => 'required|unique:products',
             'code' => 'required',
@@ -57,6 +58,8 @@ class ProductController extends Controller
         //data insert
         $product = new Product();
         $product->category_id = $request->category_id;
+
+        $product->subcategory_id = $request->subcategory_id;
 
         $product->brand_id = $request->brand_id;
 
@@ -298,6 +301,7 @@ class ProductController extends Controller
 
         $request->validate([
             'category_id' => 'required',
+            'subcategory_id' => 'required',
             'brand_id' => 'required',
             'name' => 'required|unique:products,name,'.$request->id,
             'code' => 'required',
@@ -330,6 +334,7 @@ class ProductController extends Controller
 
      //data update
         $product->category_id = $request->category_id;
+        $product->subcategory_id = $request->subcategory_id;
         $product->brand_id = $request->brand_id;
         $product->name = $request->name;
         $product->code = $request->code;
