@@ -109,199 +109,30 @@ Product Page
 
 <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
 
- {{-- <script>
-$(document).ready(function() {
-     // Initialize variables
-     var selectedColorId = null;
-
-// Handle color click event
-$(document).on('click', '.color-option', function() {
-    // Remove border from previously selected color
-    $('.color-option').css('border', 'none');
-
-    // Set new selected color
-    selectedColorId = $(this).data('id');
-
-    // Add border to the selected color
-    $(this).css('border', '2px solid #000');
-
-    // Fetch products after selecting color
-    fetchProducts();
-});
-    function fetchProducts(page = 1) {
-        var minPrice = $('#min-price').val();
-        var maxPrice = $('#max-price').val();
-        var categoryId = {{ $category->id }};
-        var brands = [];
-        var subcats = [];
-        $('.brand-filter:checked').each(function() {
-            brands.push($(this).data('id'));
-        });
-        $('.subcat-filter:checked').each(function() {
-            subcats.push($(this).data('id'));
-        });
-        var sort = $('#sort-select').val();
-
-        $.ajax({
-            url: "{{ route('products.filter') }}?page=" + page,
-            method: 'GET',
-            data: {
-                category_id: categoryId,
-                min_price: minPrice,
-                max_price: maxPrice,
-                brands: brands,
-                subcats: subcats,
-                color:selectedColorId,
-                sort: sort
-            },
-            success: function(response) {
-                $('#product-list').html(response);
-
-                // Update the product count
-                var productCount = $(response).find('.product-tab-grid').length;
-                $('#product-count').html('<p>Showing ' + productCount + ' results</p>');
-            }
-        });
-    }
-
-    // Filter products by price
-    $('#filter-price').on('click', function() {
-        fetchProducts();
-    });
-
-    // Event delegation for pagination links
-    $(document).on('click', '.pagination a', function(e) {
-        e.preventDefault();
-        var page = $(this).attr('href').split('page=')[1];
-        fetchProducts(page);
-    });
-
-    // Sort products
-    $('#sort-select').on('change', function() {
-        fetchProducts();
-    });
-
-    // Filter by brand
-    $('.brand-filter').on('change', function() {
-        fetchProducts();
-    });
-
-    // Filter by subcategory
-    $('.subcat-filter').on('change', function() {
-        fetchProducts();
-    });
-});
-</script> --}}
-
-
-{{-- <script>
-    $(document).ready(function() {
-        // Initialize variables
-        var selectedColorId = null;
-
-        // Handle color click event
-        $(document).on('click', '.color-option', function() {
-            // Remove border from previously selected color
-            $('.color-option').css('border', 'none');
-
-            // Set new selected color
-            selectedColorId = $(this).data('id');
-
-            // Add border to the selected color
-            $(this).css('border', '2px solid #000');
-
-            // Fetch products after selecting color
-            fetchProducts();
-        });
-
-        // Fetch products function
-        function fetchProducts(page = 1) {
-            var minPrice = $('#min-price').val();
-            var maxPrice = $('#max-price').val();
-            var categoryId = {{ $category->id }};
-            var brands = [];
-            var subcats = [];
-
-            // Collect selected brands
-            $('.brand-filter:checked').each(function() {
-                brands.push($(this).data('id'));
-            });
-
-            // Collect selected subcategories
-            $('.subcat-filter:checked').each(function() {
-                subcats.push($(this).data('id'));
-            });
-
-            var sort = $('#sort-select').val();
-
-            $.ajax({
-                url: "{{ route('products.filter') }}?page=" + page,
-                method: 'GET',
-                data: {
-                    category_id: categoryId,
-                    min_price: minPrice,
-                    max_price: maxPrice,
-                    brands: brands,
-                    subcats: subcats,
-                    color: selectedColorId, // Pass the selected color ID
-                    sort: sort
-                },
-                success: function(response) {
-                    $('#product-list').html(response);
-
-                    // Update the product count
-                    var productCount = $(response).find('.product-tab-grid').length;
-                    $('#product-count').html('<p>Showing ' + productCount + ' results</p>');
-                }
-            });
-        }
-
-        // Filter products by price
-        $('#filter-price').on('click', function() {
-            fetchProducts();
-        });
-
-        // Event delegation for pagination links
-        $(document).on('click', '.pagination a', function(e) {
-            e.preventDefault();
-            var page = $(this).attr('href').split('page=')[1];
-            fetchProducts(page);
-        });
-
-        // Sort products
-        $('#sort-select').on('change', function() {
-            fetchProducts();
-        });
-
-        // Filter by brand
-        $(document).on('change', '.brand-filter', function() {
-            fetchProducts();
-        });
-
-        // Filter by subcategory
-        $(document).on('change', '.subcat-filter', function() {
-            fetchProducts();
-        });
-    });
-    </script> --}}
-
     <script>
         $(document).ready(function() {
             // Initialize variables
             var selectedColorId = null;
 
-            // Handle color click event
-            $(document).on('click', '.color-option', function() {
-                // Remove border from previously selected color
-                $('.color-option').css('border', 'none');
+             // Handle color click event
+            $(document).on('click', '.color-option', function(e) {
+                e.preventDefault(); // Prevent the default link behavior
 
-                // Set new selected color
-                selectedColorId = $(this).data('id');
+                var clickedColorId = $(this).data('id');
 
-                // Add border to the selected color
-                $(this).css('border', '2px solid #000');
+                // Check if the clicked color is already selected
+                if (selectedColorId === clickedColorId) {
+                    // If it's selected, unselect it
+                    selectedColorId = null;
+                    $(this).css('border', '2px solid transparent'); // Remove the border
+                } else {
+                    // If it's not selected, unselect the previous and select the new one
+                    $('.color-option').css('border', '2px solid transparent'); // Unselect all
+                    selectedColorId = clickedColorId;
+                    $(this).css('border', '2px solid #000'); // Highlight the new selection
+                }
 
-                // Fetch products after selecting color
+                // Fetch products after selecting/unselecting color
                 fetchProducts();
             });
 

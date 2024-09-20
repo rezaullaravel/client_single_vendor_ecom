@@ -20,6 +20,16 @@ class ShoppingCartController extends Controller
 
     //product add to cart
     public function productAddToCart(Request $request){
+        // $request->validate([
+        //     'color_id'=>'required'
+        // ],[
+        //     'color_id.required'=>'Please select color.'
+        // ]);
+
+
+        if($request->color_id==null){
+            return redirect()->back()->with('error','You have to select color.');
+        }
 
             $product = ShoppingCart::where('user_id',Auth::user()->id)->where('product_id',$request->product_id)->where('color_id',$request->color_id)->first();
 

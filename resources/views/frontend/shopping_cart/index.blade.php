@@ -10,6 +10,8 @@ Shopping Cart
    .qtystyle{
       width: 27px;
       text-align: center;
+      margin:0;
+      padding:0;
    }
 
    @media (max-width: 767px) {
@@ -68,7 +70,8 @@ Shopping Cart
                         <tbody>
                             @foreach ($cart_products as $key => $product)
                             @php
-                                $main_product = App\Models\Product::with('colors')->where('id', $product->product_id)->first();
+                                $main_product = App\Models\Product::where('id', $product->product_id)->first();
+                                $colors = $main_product->colors->pluck('name', 'id');
                             @endphp
                             <tr>
                                 <td>{{ $key + 1 }}</td>
@@ -78,19 +81,19 @@ Shopping Cart
                                 <td>
                                     <div class="input-group quantity">
                                         @if ($product->quantity > 1)
-                                        <button class="input-group-text qtyDecrement" data-id="{{ $product->id }}">-</button>
+                                        <button class="input-group-text qtyDecrement qtystyle" data-id="{{ $product->id }}">-</button>
                                         @else
-                                        <button class="input-group-text">-</button>
+                                        <button class="input-group-text qtystyle">-</button>
                                         @endif
-                                        <input type="text" class="qty-input qtystyle" value="{{ $product->quantity }}">
-                                        <button class="input-group-text qtyIncrement" data-id="{{ $product->id }}">+</button>
+                                        <input type="text" class="qty-input qtystyle" value="{{ $product->quantity }}" readonly>
+                                        <button class="input-group-text qtyIncrement qtystyle" data-id="{{ $product->id }}">+</button>
                                     </div>
                                 </td>
                                 <td>
                                     <select name="color_id" class="form-control color_id" required data-id="{{ $product->id }}">
                                         <option value="" selected disabled>Select</option>
-                                        @foreach ($main_product->colors as $color)
-                                        <option value="{{ $color->id }}" {{ $color->id == $product->color_id ? 'selected' : '' }}>{{ $color->name }}</option>
+                                        @foreach ($colors as $colorId => $colorName)
+                                          <option value="{{ $colorId }}" {{ $colorId == $product->color_id ? 'selected' : '' }}>{{ $colorName }}</option>
                                         @endforeach
                                     </select>
                                 </td>

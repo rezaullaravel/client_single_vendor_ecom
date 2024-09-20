@@ -2,8 +2,8 @@
 @section('title')
 Product Single Page
 @endsection
-@section('content')
 
+@section('content')
 <style>
    .custom-radio-buttons {
    display: flex;
@@ -16,6 +16,7 @@ Product Single Page
    height: 20px; /* Height of the button */
    padding: 0; /* Remove padding */
    border-radius: 50%; /* Circular shape */
+   padding-top: 3px;
    }
    .custom-radio-buttons .btn i {
    font-size: 10px; /* Size of the icon */
@@ -23,7 +24,36 @@ Product Single Page
    .custom-radio-buttons .btn input[type="radio"] {
    display: none; /* Hide the actual radio button */
    }
+
+   .mybutton {
+  background-color: #04AA6D; /* Green */
+  border: none;
+  color: white;
+  padding: 6px 26px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.mybutton1 {
+  background-color: white;
+  color: black;
+  border: 2px solid #04AA6D;
+}
+
+.mybutton1:hover {
+  background-color: #04AA6D;
+  color: white;
+
+}
 </style>
+
+
+
 <div class="content">
    <!--single-->
    <div class="single-wl3">
@@ -77,7 +107,7 @@ Product Single Page
                      @if (!empty($product->discount_price))
                      <p>Discount <strong>({{ $product->discount_price }}%)</strong></p>
                      @endif
-                     <p class="price item_price">TK. {{ $product->selling_price }}</p>
+                     <p class="price item_price">TK. <span id="basePrice">{{ $product->selling_price }}</span></p>
                      <div class="description">
                         <p><span>Description : </span> {!! $product->description !!}</p>
                      </div>
@@ -92,34 +122,23 @@ Product Single Page
                                  <div class="entry value-plus1 active">&nbsp;</div>
                               </div>
                            </div>
-                           <!--quantity-->
-                           <script>
-                              $('.value-plus1').on('click', function(){
-                                      var input = $(this).parent().find('.value1');
-                                      var newVal = parseInt(input.val(), 10) + 1;
-                                      input.val(newVal);
-                                  });
 
-                                  $('.value-minus1').on('click', function(){
-                                      var input = $(this).parent().find('.value1');
-                                      var newVal = parseInt(input.val(), 10) - 1;
-                                      if(newVal >= 1) {
-                                          input.val(newVal);
-                                      }
-                                  });
-
-                           </script>
-                           <!--quantity-->
                         </div>
                         <div class="color-quality">
                            <h6>Color:
                            </h6>
                            @foreach($product->colors as $color)
                            <div style="display: inline-block; margin-right: 10px;">
-                              <input type="radio" name="color_id" id="color_{{ $color->id }}" value="{{ $color->id }}" data-color="{{ $color->code }}" style="display: none;" required>
+                              <input type="radio" name="color_id" id="color_{{ $color->id }}" value="{{ $color->id }}" data-color="{{ $color->code }}" style="display: none;">
                               <label for="color_{{ $color->id }}" class="color-label" style="background: {{ $color->code }}; display: inline-block; width: 25px; height: 25px; border-radius: 50%; border: 2px solid transparent; cursor: pointer;"></label>
                            </div>
                            @endforeach
+
+
+
+                            @error('color_id')
+                             <p class="text-danger">{{ $message }}</p>
+                            @enderror
                            <!-- Selected color ID (hidden) -->
                            <p id="selectedColorIdWrapper" style="display: none;">
                               Selected Color ID: <span id="selectedColorId">None</span>
@@ -149,6 +168,7 @@ Product Single Page
                         <div class="women">
                            <input type="hidden" name="product_id" value="{{ $product->id }}">
                            <button type="submit" class="my-cart-b item_add">Add To Cart</button>
+                           <button type="button" id="buyNowButton" class="mybutton mybutton1">Buy Now</button>
                         </div>
                      </form>
                   </div>
@@ -391,4 +411,300 @@ Product Single Page
    @endif
    <!--related product end-->
 </div>
+
+ <!--quantity-->
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        // Base price and quantity selector
+        var basePrice = parseInt(document.getElementById("basePrice").textContent); // Get the base price from the product
+        var quantityInput = document.querySelector(".value1"); // Select the quantity input field
+
+        // Function to update the total price
+        function updatePrice() {
+            var quantity = parseInt(quantityInput.value); // Get the current quantity
+            var totalPrice = basePrice * quantity;        // Calculate the total price
+            document.getElementById("basePrice").textContent = totalPrice; // Update the price in the HTML
+        }
+
+        // Increment quantity
+        var valuePlus = document.querySelector('.value-plus1');
+        valuePlus.addEventListener('click', function () {
+            var currentQuantity = parseInt(quantityInput.value);
+            quantityInput.value = currentQuantity + 1; // Increase the quantity
+            updatePrice(); // Update the price after quantity change
+        });
+
+        // Decrement quantity
+        var valueMinus = document.querySelector('.value-minus1');
+        valueMinus.addEventListener('click', function () {
+            var currentQuantity = parseInt(quantityInput.value);
+            if (currentQuantity > 1) {
+                quantityInput.value = currentQuantity - 1; // Decrease the quantity
+                updatePrice(); // Update the price after quantity change
+            }
+        });
+    });
+</script>
+<!--quantity-->
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        var buyNowButton = document.getElementById('buyNowButton');
+
+        buyNowButton.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            var product_id = document.querySelector('input[name="product_id"]').value;
+            var color_id = document.getElementById('selectedColorId').textContent.trim(); // Trim whitespace
+
+            if (color_id === "") { // Check if color_id is empty
+                alert('Color is required.');
+                return; // Stop further execution
+            }
+
+            var formData = new FormData();
+            formData.append('product_id', product_id);
+            formData.append('color_id', color_id);
+            formData.append('quantity', document.querySelector('input[name="quantity"]').value);
+            formData.append('_token', document.querySelector('input[name="_token"]').value); // CSRF token
+
+            // AJAX request using Fetch API
+            fetch('{{ url("/product/buy/now") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest' // Optional, useful for identifying AJAX requests in Laravel
+                }
+            })
+            .then(function (response) {
+                if (response.ok) {
+                    window.location.href = '{{ url("/checkout") }}'; // Redirect to checkout page
+                } else {
+                    throw new Error('Color is required.');
+                }
+            })
+            .catch(function (error) {
+                alert(error.message);
+            });
+        });
+    });
+</script>
+<!--product buy now -->
+
 @endsection
+
+
+{{-- custom css for related product --}}
+
+<style>
+    /* Base settings for containers */
+.container, .row {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+/* Override col-md-12 */
+.col-md-12 {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+}
+
+/* Override col-md-9 */
+.col-md-9 {
+    width: 75%;
+    max-width: 75%;
+    flex: 0 0 75%;
+}
+
+/* Override col-md-6 */
+.col-md-6 {
+    width: 50%;
+    max-width: 50%;
+    flex: 0 0 50%;
+}
+
+/* Override col-md-4 */
+.col-md-4 {
+    width: 33.33%;
+    max-width: 33.33%;
+    flex: 0 0 33.33%;
+}
+
+/* Override col-md-3 */
+.col-md-3 {
+    width: 25%;
+    max-width: 25%;
+    flex: 0 0 25%;
+}
+
+/* Media Queries for Responsiveness */
+
+/* Large devices (desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .col-md-12, .col-md-9, .col-md-6, .col-md-4, .col-md-3 {
+        /* No changes needed, as Bootstrap classes handle large screens */
+    }
+}
+
+/* Medium devices (tablets, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .col-md-9 {
+        width: 70%;
+        max-width: 70%;
+    }
+    .col-md-6 {
+        width: 50%;
+        max-width: 50%;
+    }
+    .col-md-4 {
+        width: 33.33%;
+        max-width: 33.33%;
+    }
+    .col-md-3 {
+        width: 25%;
+        max-width: 25%;
+    }
+}
+
+/* Small devices (landscape phones, 768px to 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .col-md-9 {
+        width: 100%;
+        max-width: 100%;
+    }
+    .col-md-6 {
+        width: 50%;
+        max-width: 50%;
+    }
+    .col-md-4 {
+        width: 50%;
+        max-width: 50%;
+    }
+    .col-md-3 {
+        width: 50%;
+        max-width: 50%;
+    }
+}
+
+/* Extra small devices (portrait phones, less than 768px) */
+@media (max-width: 767px) {
+    .col-md-9, .col-md-6, .col-md-4, .col-md-3 {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* Flexbox support for rows */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+/* General container and spacing adjustments */
+.new-arrivals-w3agile {
+    padding: 20px 0;
+}
+
+.new-arrivals-w3agile .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Ensure images are responsive */
+.new-arrivals-w3agile .photo img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Controls (arrows) for the carousel */
+.new-arrivals-w3agile .controls {
+    text-align: right;
+}
+
+.new-arrivals-w3agile .controls .btn {
+    padding: 8px;
+    font-size: 16px;
+}
+
+/* Responsive Columns */
+.new-arrivals-w3agile .col-sm-3 {
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 1200px) {
+    .new-arrivals-w3agile .col-sm-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .new-arrivals-w3agile .col-sm-3 {
+        flex: 0 0 33.33%;
+        max-width: 33.33%;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .new-arrivals-w3agile .col-sm-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 575px) {
+    .new-arrivals-w3agile .col-sm-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Ensure that the .col-item (product card) looks clean and tidy */
+.new-arrivals-w3agile .col-item {
+    border: 1px solid #eee;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.new-arrivals-w3agile .info {
+    text-align: center;
+}
+
+.new-arrivals-w3agile .price h5 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.new-arrivals-w3agile .btn-details {
+    margin-top: 10px;
+}
+
+.new-arrivals-w3agile .separator {
+    padding-top: 10px;
+}
+
+/* Carousel inner styling */
+.carousel-inner {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.carousel-inner .item {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+</style>
+{{-- custom css for related product --}}

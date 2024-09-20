@@ -23,6 +23,7 @@ use App\Http\Controllers\Frontend\FrontContactController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
 use App\Http\Controllers\Frontend\ShoppingCartController;
 use App\Http\Controllers\Frontend\OrderTrackingController;
+use App\Http\Controllers\Frontend\ProductBuyNowController;
 use App\Http\Controllers\Admin\AdminContactMessageController;
 
 
@@ -202,6 +203,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cart-item/delete/{id}',[ShoppingCartController::class,'cartItemDelete']);
     Route::post('/cart-color/update',[ShoppingCartController::class,'cartProductColorUpdate']);
     Route::get('/cart/empty',[ShoppingCartController::class,'emptyCart']);
+
+    //product buy now
+    Route::post('/product/buy/now',[ProductBuyNowController::class,'buyNow']);
 
     //checkout page
     Route::get('/checkout',[CheckoutController::class,'checkout']);
