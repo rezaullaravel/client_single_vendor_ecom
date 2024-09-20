@@ -173,7 +173,7 @@ Route::get('/',[FrontendHomeController::class,'index']);
 Route::get('/about-us',[FrontendHomeController::class,'aboutUs'])->name('about');
 
 //product single page
-Route::get('/product/single/{id}',[FrontendHomeController::class,'productSingle']);
+Route::get('/product/single/{id}',[FrontendHomeController::class,'productSingle'])->name('product.single');
 
 //category wise product view
 Route::get('/subcategory-wise/product/show/{id}',[FrontendHomeController::class,'subcategoryWiseProductShow'])->name('subcategory-wise.product.show');

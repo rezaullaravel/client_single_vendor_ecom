@@ -151,8 +151,10 @@ class FrontendHomeController extends Controller
         if ($request->has('color') && $request->input('color') !== 'null') {
             $query->join('color_products', 'products.id', '=', 'color_products.product_id')->where('color_products.color_id', $request->input('color'));
         }
+
         // Ensure products are distinct to avoid duplicates
-        $query->distinct('products.id');
+        $query->select('products.*')->distinct();
+
 
         // Sorting
         if (!empty($request->sort)) {
@@ -183,11 +185,11 @@ class FrontendHomeController extends Controller
 
         // Check if request is an AJAX call
         if ($request->ajax()) {
-             return view('frontend.product.partials.filter_products', compact('products', 'category', 'brands', 'colors'))->render();
+             return view('frontend.product.partials.filter_products', compact('products'))->render();
         }
 
         // For non-AJAX requests (initial page load)
-        return view('frontend.product.subcategorywise_product_show', compact('products', 'category', 'brands', 'colors'));
+        return view('frontend.product.subcategorywise_product_show', compact('products'));
     }
 
 

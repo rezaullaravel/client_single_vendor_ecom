@@ -23,7 +23,7 @@
                                 <del>TK.{{ $product->purchase_price }}</del>
                                 <em class="item_price">TK.{{ $product->selling_price }}</em>
                             </p>
-                            <a href="{{ url('product/single', $product->id) }}" data-text="Add To Cart" class="my-cart-b item_add">Details</a>
+                            <a href="{{ route('product.single',$product->id) }}" data-text="Add To Cart" class="my-cart-b item_add">Details</a>
                         </div>
                     </div>
                 </div>
