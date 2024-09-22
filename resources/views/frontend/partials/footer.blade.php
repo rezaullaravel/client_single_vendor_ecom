@@ -3,7 +3,10 @@
         <div class="footer-grids">
             <div class="col-md-3 footer-grid">
                 <h4>About </h4>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                @php
+                  $aboutus = App\Models\AboutUs::first();
+                @endphp
+                <p>{{ Str::limit($aboutus->description,100) }}</p>
                 <div class="social-icon">
                     <a href="#"><i class="icon"></i></a>
                     <a href="#"><i class="icon1"></i></a>
@@ -26,6 +29,7 @@
                     <li><a href="{{ route('about') }}">About</a></li>
                     <li><a href="{{ route('contact') }}">Contact</a></li>
                     <li><a href="{{ url('order-tracking') }}">Order Tracking</a></li>
+                    <li><a href="{{ route('faq') }}">Faq</a></li>
                 </ul>
             </div>
             <div class="col-md-3 footer-grid foot">

@@ -51,7 +51,7 @@
 
           <li class="nav-item {{ (request()->is('admin/category*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->is('admin/category*')) ? 'active' : '' }}">
-              <i class="nav-icon fas fa-solid fa-object-group"></i>
+              <i class="nav-icon fas fa-solid fa-hand-point-right"></i>
               <p>
                 Category
                 <i class="right fas fa-angle-left"></i>
@@ -76,7 +76,7 @@
 
           <li class="nav-item {{ (request()->is('admin/subcategory*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->is('admin/subcategory*')) ? 'active' : '' }}">
-              <i class="nav-icon fas fa-solid fa-layer-group"></i>
+              <i class="nav-icon fas fa-solid fa-hand-point-right"></i>
               <p>
                 SubCategory
                 <i class="right fas fa-angle-left"></i>
@@ -102,7 +102,7 @@
 
           <li class="nav-item {{ (request()->is('admin/brand*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->is('admin/brand*')) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-solid fa-copyright"></i>
+                <i class="nav-icon fas fa-solid fa-hand-point-right"></i>
               <p>
                 Brand
                 <i class="right fas fa-angle-left"></i>
@@ -157,7 +157,7 @@
 
           <li class="nav-item {{ (request()->is('admin/product*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->is('admin/product*')) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-solid fa-poo"></i>
+                <i class="nav-icon fas fa-solid fa-hand-point-right"></i>
               <p>
                 Product
                 <i class="right fas fa-angle-left"></i>
@@ -183,7 +183,7 @@
           {{-- order start --}}
           <li class="nav-item {{ (request()->is('admin/order*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->is('admin/order*')) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-solid fa-copyright"></i>
+                <i class="nav-icon fas fa-solid fa-hand-point-right"></i>
               <p>
                 Order
                 <i class="right fas fa-angle-left"></i>
@@ -204,7 +204,7 @@
            {{-- slider start --}}
            <li class="nav-item {{ (request()->is('admin/slider*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->is('admin/slider*')) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-solid fa-copyright"></i>
+                <i class="nav-icon fas fa-solid fa-hand-point-right"></i>
               <p>
                 Slider
                 <i class="right fas fa-angle-left"></i>
@@ -240,7 +240,7 @@
           {{-- contact us start --}}
           <li class="nav-item {{ (request()->is('admin/contact*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->is('admin/contact*')) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-solid fa-copyright"></i>
+                <i class="nav-icon fas fa-solid fa-hand-point-right"></i>
               <p>
                 Contact
                 <i class="right fas fa-angle-left"></i>
@@ -257,10 +257,21 @@
           </li>
           {{-- contact us end --}}
 
+          {{-- faq --}}
+          <li class="nav-item {{ (request()->is('admin/faq*')) ? 'menu-open' : '' }}">
+            <a href="{{ url('admin/faq') }}" class="nav-link {{ (request()->is('admin/faq*')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-regular fa-hand-point-right"></i>
+              <p>
+                Faq
+              </p>
+            </a>
+          </li>
+          {{-- faq --}}
+
           {{-- setting --}}
           <li class="nav-item {{ (request()->is('admin/setting*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->is('admin/setting*')) ? 'active' : '' }}">
-              <i class="nav-icon fas fa-solid fa-object-group"></i>
+              <i class="nav-icon fas fa-solid fa-hand-point-right"></i>
               <p>
                 Setting
                 <i class="right fas fa-angle-left"></i>

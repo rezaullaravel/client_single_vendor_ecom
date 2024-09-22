@@ -144,64 +144,36 @@ class ProductController extends Controller
 
 
     //manage
-    public function manage(Request $request){
+    public function manage(Request $request) {
         $categories = Category::all();
         $brands = Brand::all();
-        $products = Product::all();
 
+        // Fetch products based on filters
+        $query = Product::query();
 
-        return view('admin.product.index',compact('products','categories','brands'));
-    }//end method
-
-
-    //product filter by category
-    public function filterBycategory(Request $request){
-
-            $products = Product::where('category_id',$request->category_id)->get();
-
-            if(count($products)>0){
-                return view('admin.product.filter_by_category',compact('products'))->render();
-            } else{
-                return response()->json([
-                    'status'=>'No data found',
-                ]);
-            }
-    }//end method
-
-
-    //product filter by brand
-    public function filterByBrand(Request $request){
-        $products = Product::where('brand_id',$request->brand_id)->get();
-
-        if(count($products)>0){
-            return view('admin.product.filter_by_category',compact('products'))->render();
-        } else{
-            return response()->json([
-                'status'=>'No data found',
-            ]);
-        }
-    }//end method
-
-
-    //product filter by status
-    public function filterByStatus(Request $request){
-
-             $result = Product::where('status',$request->status)->get();
-
-        if(count($result)>0){
-            // return response()->json([
-            //     'result'=>$result,
-            // ]);
-
-            return view('admin.product.filter_by_status',compact('result'))->render();
-        } else{
-            return response()->json([
-                'status'=>'No data found',
-            ]);
+        // Apply filters if provided
+        if ($request->category_id) {
+            $query->where('category_id', $request->category_id);
         }
 
+        if ($request->brand_id) {
+            $query->where('brand_id', $request->brand_id);
+        }
 
+        if ($request->status !== null) {
+            $query->where('status', $request->status);
+        }
+
+        $products = $query->get();
+
+        if ($request->ajax()) {
+            // Return partial view with filtered products for AJAX requests
+            return view('admin.product.partials.product_list', compact('products'))->render();
+        }
+
+        return view('admin.product.index', compact('products', 'categories', 'brands'));
     }//end method
+
 
 
     //product status deactive

@@ -8,8 +8,10 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Frontend\FaqController;
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\AdminFaqController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\WarehouseController;
@@ -119,10 +121,7 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/product/edit/{id}',[ProductController::class,'edit']);
     Route::get('/product/delete/{id}',[ProductController::class,'delete']);
     Route::post('/product/update',[ProductController::class,'update']);
-    Route::get('/product/manage',[ProductController::class,'manage']);
-    Route::get('/product/filter/by-category',[ProductController::class,'filterBycategory']);
-    Route::get('/product/filter/by-brand',[ProductController::class,'filterByBrand']);
-    Route::get('/product/filter/by-status',[ProductController::class,'filterByStatus']);
+    Route::get('/product/manage',[ProductController::class,'manage'])->name('admin.product.manage');
     Route::get('/product-status/deactive/{id}',[ProductController::class,'productStatusDeactive']);
     Route::get('/product-status/active/{id}',[ProductController::class,'productStatusActive']);
     Route::get('/product-featured/deactive/{id}',[ProductController::class,'productFeaturedDeactive']);
@@ -181,6 +180,14 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/setting/password',[AdminProfileController::class,'passwordChangeForm'])->name('admin.setting.password');
     Route::post('/setting/password/update/{id}',[AdminProfileController::class,'passwordUpdate'])->name('admin.setting.password.update');
 
+    //faq
+    Route::get('/faq',[AdminFaqController::class,'index'])->name('admin.faq.index');
+    Route::get('/faq-create',[AdminFaqController::class,'create'])->name('admin.faq.create');
+    Route::post('/faq-store',[AdminFaqController::class,'store'])->name('admin.faq.store');
+    Route::get('/faq-edit/{id}',[AdminFaqController::class,'edit'])->name('admin.faq.edit');
+    Route::post('/faq-update/{id}',[AdminFaqController::class,'update'])->name('admin.faq.update');
+    Route::get('/faq-delete/{id}',[AdminFaqController::class,'delete'])->name('admin.faq.delete');
+
 
 });
 
@@ -211,6 +218,15 @@ Route::get('/products/search', [FrontendHomeController::class, 'productSearch'])
 //order tracking
 Route::get('/order-tracking',[OrderTrackingController::class,'index'])->name('order.track');
 Route::get('/order-fetch',[OrderTrackingController::class,'fetchOrder'])->name('fetch.order');
+
+
+//contact us
+Route::get('/contact/us',[FrontContactController::class,'index'])->name('contact');
+Route::post('/insert/message',[FrontContactController::class,'insertMessage'])->name('insert.message');
+
+
+//Faq
+Route::get('/faq',[FaqController::class,'index'])->name('faq');
 
 
 //frontend protected route
@@ -248,12 +264,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user-password',[UserProfileController::class,'userPassword'])->name('user.password');
     Route::post('/user-password-update/{id}',[UserProfileController::class,'userPasswordUpdate'])->name('user.password.update');
 });
-
-
-
-
-//contact us
-Route::get('/contact/us',[FrontContactController::class,'index'])->name('contact');
-Route::post('/insert/message',[FrontContactController::class,'insertMessage'])->name('insert.message');
 
 /*===================================== Frontend all route end   ==============================================*/
