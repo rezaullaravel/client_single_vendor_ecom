@@ -45,37 +45,6 @@ class FrontendHomeController extends Controller
     }//end method
 
 
-    // //subcategory wise product show
-    // public function subcategoryWiseProductShow($id){
-    //             // Find the subcategory
-    //         $subcategory = Subcategory::find($id);
-
-    //         // Get the category associated with the subcategory
-    //         $category = Category::where('id', $subcategory->category_id)->first();
-
-    //         // Fetch all subcategories under the same category
-    //         $subcategories = Subcategory::where('category_id', $subcategory->category_id)->get();
-
-    //         // Fetch products based on subcategory_id and paginate them
-    //         $products = Product::where('subcategory_id', $id)->paginate(30);
-
-    //         // Get the unique brand IDs associated with the products in that subcategory
-    //         $getBrands = $products->pluck('brand_id')->unique();
-
-    //         // Fetch the brands using the unique brand IDs
-    //         $brands = Brand::whereIn('id', $getBrands)->get();
-
-
-    //         $getProductIds = $products->pluck('id');
-    //         // Fetch the colors associated with those products using the color_products table
-    //         $colors = Color::whereIn('id', function ($query) use ($getProductIds) {
-    //             $query->select('color_id')
-    //                 ->from('color_products')
-    //                 ->whereIn('product_id', $getProductIds);
-    //         })->get();
-
-    //     return view('frontend.product.subcategorywise_product_show',compact('products','category','subcategory','brands','subcategories','colors'));
-    // }//end method
 
     //sub category wise product
     public function subcategoryWiseProductShow($id){

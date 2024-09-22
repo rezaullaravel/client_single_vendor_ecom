@@ -126,6 +126,15 @@ body, div, a, button {
 
 
 
+<style>
+.home{
+    color:#fff;
+}
+</style>
+
+
+
+
 <div class="header">
     <div class="header-top">
        <div class="container">
@@ -134,7 +143,7 @@ body, div, a, button {
           </div>
           <div class="top-middle">
             <form action="{{ route('product.search') }}" method="GET">
-                <input type="text" name="string" placeholder="search here....">
+                <input type="text"  name="string" placeholder="search here....">
                 <button type="submit">Search</button>
              </form>
           </div>
@@ -151,84 +160,62 @@ body, div, a, button {
           <div class="clearfix"></div>
        </div>
     </div>
-    <div class="heder-bottom">
-       <div class="container">
-          <div class="logo-nav">
-             <div class="logo-nav-left">
-                <h1><a href="{{ url('/') }}">My Shop <span>Shop anywhere</span></a></h1>
-             </div>
-               <div class="logo-nav-left1">
-                    <nav class="navbar navbar-default">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header nav_2">
-                        <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        </button>
-                    </div>
-                    <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="{{ url('/') }}" class="act">Home</a></li>
-                            <!-- Mega Menu -->
-                            @php
-                            $categories = App\Models\Category::all();
-                            @endphp
+    {{-- header bottom --}}
+    <div class="header-bottom">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">MyShop</a>
+              </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                  <li class="home"><a href="/">Home</a></li>
 
-                                @foreach ($categories as $category)
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ $category->category_name }}
-                                        @if (!empty($category->subcategories) && $category->subcategories->count() > 0)
-                                            <b class="caret"></b>
-                                        @endif
-                                    </a>
+                    @php
+                        $categories = App\Models\Category::all();
+                    @endphp
+                   @foreach ($categories as $category)
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;">{{ $category->category_name }} @if (!empty($category->subcategories) && $category->subcategories->count() > 0)
+                        <b class="caret"></b>
+                    @endif
+                   </a>
+                   @if (!empty($category->subcategories) && $category->subcategories->count() > 0)
+                    <ul class="dropdown-menu">
+                        @foreach ($category->subcategories as $subcategory)
+                          <li><a href="{{ route('subcategory-wise.product.show',$subcategory->id) }}">{{ $subcategory->subcategory_name }}</a></li>
+                        @endforeach
+                    </ul>
+                    @endif
+                  </li>
+                  @endforeach
 
-                                    @if (!empty($category->subcategories) && $category->subcategories->count() > 0)
-                                        <ul class="dropdown-menu multi-column columns-3">
-                                            <div class="row">
-                                                <div class="col-sm-3 col-xs-3">
-                                                    <ul class="multi-column-dropdown">
-                                                        @foreach ($category->subcategories as $subcategory)
-                                                            <li><a href="{{ route('subcategory-wise.product.show',$subcategory->id) }}">{{ $subcategory->subcategory_name }}</a></li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        </ul>
-                                    @endif
-                                </li>
-                                @endforeach
-                        </ul>
-                    </div>
-                    </nav>
-               </div>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="{{ url('/cart/view') }}">
 
-
-
-
-
-             <div class="header-right2">
-                <div class="cart box_1">
-                   <a href="{{ url('/cart/view') }}">
-                      <h3>
-                         <div class="total">
+                        <div class="total">
                             @if (Auth::check())
                             @php
-                            $products =App\Models\ShoppingCart::where('user_id',Auth::user()->id)->count();
+                               $products =App\Models\ShoppingCart::where('user_id',Auth::user()->id)->count();
                             @endphp
                             (<span id="simpleCart_quantity">{{ $products }}</span> items)
                             @endif
-                         </div>
-                         <img src="{{asset('/')}}frontend/images/bag.png" alt="" />
-                      </h3>
-                   </a>
-                   <div class="clearfix"> </div>
-                </div>
-             </div>
-             <div class="clearfix"> </div>
-          </div>
-       </div>
+                        </div>
+                        <img src="{{asset('/')}}frontend/images/bag.png" alt="" />
+
+                     </a>
+                   </li>
+                </ul>
+              </div>
+            </div>
+        </nav>
     </div>
+
+    {{-- header bottom --}}
  </div>

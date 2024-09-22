@@ -11,14 +11,18 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Frontend\MyorderController;
+use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\PickupPointController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\DeliveryChargeController;
+use App\Http\Controllers\Frontend\UserProfileController;
 use App\Http\Controllers\Frontend\FrontContactController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
 use App\Http\Controllers\Frontend\ShoppingCartController;
@@ -108,8 +112,6 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/delivery-charge',[DeliveryChargeController::class,'index']);
     Route::post('/delivery-charge-update',[DeliveryChargeController::class,'update'])->name('admin.delivery_charge.update');
 
-
-
     //product
     Route::get('/product/add',[ProductController::class,'add']);
     Route::post('/product/store',[ProductController::class,'store']);
@@ -157,6 +159,27 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
 
     //delete multiple message
     Route::post('/delete',[AdminContactMessageController::class,'delete'])->name('delete');
+
+
+    //user
+    Route::get('/user-list',[AdminUserController::class,'index'])->name('admin.user.index');
+    Route::get('/user-create',[AdminUserController::class,'create'])->name('admin.user.create');
+    Route::post('/user-store',[AdminUserController::class,'store'])->name('admin.user.store');
+    Route::get('/user-edit/{id}',[AdminUserController::class,'edit'])->name('admin.user.edit');
+    Route::post('/user-update/{id}',[AdminUserController::class,'update'])->name('admin.user.update');
+    Route::get('/user-delete/{id}',[AdminUserController::class,'delete'])->name('admin.user.delete');
+
+    //review list
+    Route::get('/review-list',[AdminReviewController::class,'index'])->name('admin.review.index');
+
+
+    //admin profile setting
+    Route::get('/setting/profile',[AdminProfileController::class,'index'])->name('admin.setting.profile');
+    Route::post('/setting/profile/update/{id}',[AdminProfileController::class,'adminProfileUpdate'])->name('admin.setting.profile.update');
+
+    //admin password
+    Route::get('/setting/password',[AdminProfileController::class,'passwordChangeForm'])->name('admin.setting.password');
+    Route::post('/setting/password/update/{id}',[AdminProfileController::class,'passwordUpdate'])->name('admin.setting.password.update');
 
 
 });
@@ -217,6 +240,13 @@ Route::middleware(['auth'])->group(function () {
     //customer order list
     Route::get('my-order-list',[MyorderController::class,'index']);
     Route::get('my-order-details/{id}',[MyorderController::class,'orderDetails']);
+
+    //user profile
+    Route::post('/user/profile-update/{id}',[UserProfileController::class,'updateProfile'])->name('user.profile.update');
+
+    //user password update form
+    Route::get('/user-password',[UserProfileController::class,'userPassword'])->name('user.password');
+    Route::post('/user-password-update/{id}',[UserProfileController::class,'userPasswordUpdate'])->name('user.password.update');
 });
 
 

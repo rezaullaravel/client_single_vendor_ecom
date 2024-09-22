@@ -97,9 +97,6 @@ Product Page
                   </div>
                </div>
 
-               {{-- pagination --}}
-               {{ $products->links() }}
-               {{-- pagination end --}}
             </div>
          </div>
       </div>

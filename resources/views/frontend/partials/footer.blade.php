@@ -14,19 +14,18 @@
             <div class="col-md-3 footer-grid">
                 <h4>My Account</h4>
                 <ul>
-                    <li><a href="checkout.html">Checkout</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="registered.html"> Create Account </a></li>
+                    <li><a href="{{ url('checkout') }}">Checkout</a></li>
+                    <li><a href="{{ url('/login') }}">Login</a></li>
+                    <li><a href="{{ url('/register') }}"> Create Account </a></li>
                 </ul>
             </div>
             <div class="col-md-3 footer-grid">
                 <h4>Information</h4>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="products.html">Products</a></li>
-                    <li><a href="codes.html">Short Codes</a></li>
-                    <li><a href="mail.html">Mail Us</a></li>
-                    <li><a href="products1.html">products1</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{{ route('about') }}">About</a></li>
+                    <li><a href="{{ route('contact') }}">Contact</a></li>
+                    <li><a href="{{ url('order-tracking') }}">Order Tracking</a></li>
                 </ul>
             </div>
             <div class="col-md-3 footer-grid foot">

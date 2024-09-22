@@ -589,6 +589,9 @@ Product Single Page
         width: 50%;
         max-width: 50%;
     }
+    .col-sm-3 {
+    width: 85%;
+  }
 }
 
 /* Extra small devices (portrait phones, less than 768px) */
