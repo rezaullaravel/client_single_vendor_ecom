@@ -71,4 +71,6 @@ class LoginController extends Controller
                 return redirect('/admin/login')->withSuccess('Oppes! You have entered invalid credentials');
             }
     }//end method
+
+
 }

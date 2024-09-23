@@ -236,15 +236,14 @@ Route::middleware(['auth'])->group(function () {
 
     //shopping cart
     Route::get('/cart/view',[ShoppingCartController::class,'viewShoppingCart']);
-    Route::post('/addTo/cart',[ShoppingCartController::class,'productAddToCart']);
+    //product buy now or add to shopping cart
+    Route::post('/product/action',[ShoppingCartController::class,'buyNowOrAddToCart']);
     Route::post('/quantity/increment',[ShoppingCartController::class,'incrementQuantity']);
     Route::post('/quantity/decrement',[ShoppingCartController::class,'decrementQuantity']);
     Route::get('/cart-item/delete/{id}',[ShoppingCartController::class,'cartItemDelete']);
     Route::post('/cart-color/update',[ShoppingCartController::class,'cartProductColorUpdate']);
     Route::get('/cart/empty',[ShoppingCartController::class,'emptyCart']);
 
-    //product buy now
-    Route::post('/product/buy/now',[ProductBuyNowController::class,'buyNow']);
 
     //checkout page
     Route::get('/checkout',[CheckoutController::class,'checkout']);

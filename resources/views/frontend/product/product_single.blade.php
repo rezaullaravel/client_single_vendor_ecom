@@ -111,66 +111,59 @@ Product Single Page
                      <div class="description">
                         <p><span>Description : </span> {!! $product->description !!}</p>
                      </div>
-                     <form action="{{ url('/addTo/cart') }}" method="POST">
+                     <form action="{{ url('/product/action') }}" method="POST" id="productForm">
                         @csrf
                         <div class="color-quality">
-                           <h6>Quantity :</h6>
-                           <div class="quantity">
-                              <div class="quantity-select">
-                                 <div class="entry value-minus1">&nbsp;</div>
-                                 <input type="text" name="quantity" class="value1" value="1" readonly>
-                                 <div class="entry value-plus1 active">&nbsp;</div>
-                              </div>
-                           </div>
-
+                            <h6>Quantity :</h6>
+                            <div class="quantity">
+                                <div class="quantity-select">
+                                    <div class="entry value-minus1">&nbsp;</div>
+                                    <input type="text" name="quantity" class="value1" value="1" readonly>
+                                    <div class="entry value-plus1 active">&nbsp;</div>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="color-quality">
-                           <h6>Color:
-                           </h6>
-                           @foreach($product->colors as $color)
-                           <div style="display: inline-block; margin-right: 10px;">
-                              <input type="radio" name="color_id" id="color_{{ $color->id }}" value="{{ $color->id }}" data-color="{{ $color->code }}" style="display: none;">
-                              <label for="color_{{ $color->id }}" class="color-label" style="background: {{ $color->code }}; display: inline-block; width: 25px; height: 25px; border-radius: 50%; border: 2px solid transparent; cursor: pointer;"></label>
-                           </div>
-                           @endforeach
-
-
+                            <h6>Color:</h6>
+                            @foreach($product->colors as $color)
+                                <div style="display: inline-block; margin-right: 10px;">
+                                    <input type="radio" name="color_id" id="color_{{ $color->id }}" value="{{ $color->id }}" data-color="{{ $color->code }}" style="display: none;">
+                                    <label for="color_{{ $color->id }}" class="color-label" style="background: {{ $color->code }}; display: inline-block; width: 25px; height: 25px; border-radius: 50%; border: 2px solid transparent; cursor: pointer;"></label>
+                                </div>
+                            @endforeach
 
                             @error('color_id')
-                             <p class="text-danger">{{ $message }}</p>
+                                <p class="text-danger">{{ $message }}</p>
                             @enderror
-                           <!-- Selected color ID (hidden) -->
-                           <p id="selectedColorIdWrapper" style="display: none;">
-                              Selected Color ID: <span id="selectedColorId">None</span>
-                           </p>
-                           <script>
-                              const colorLabels = document.querySelectorAll('.color-label');
-                              const selectedColorDisplay = document.getElementById('selectedColorId');
 
-                              colorLabels.forEach(label => {
-                                  label.addEventListener('click', function() {
-                                      // Get the corresponding radio button
-                                      const radio = document.getElementById(this.getAttribute('for'));
+                            <p id="selectedColorIdWrapper" style="display: none;">
+                                Selected Color ID: <span id="selectedColorId">None</span>
+                            </p>
+                            <script>
+                                const colorLabels = document.querySelectorAll('.color-label');
+                                const selectedColorDisplay = document.getElementById('selectedColorId');
 
-                                      // Select the radio button
-                                      radio.checked = true;
+                                colorLabels.forEach(label => {
+                                    label.addEventListener('click', function() {
+                                        const radio = document.getElementById(this.getAttribute('for'));
+                                        radio.checked = true;
+                                        selectedColorDisplay.textContent = radio.value;
 
-                                      // Show the selected color's ID (this part won't be visible because the p tag is hidden)
-                                      selectedColorDisplay.textContent = radio.value;
-
-                                      // Highlight the selected color by changing the border
-                                      colorLabels.forEach(l => l.style.border = '2px solid transparent');  // Reset all borders
-                                      this.style.border = '2px solid black';  // Highlight the selected color
-                                  });
-                              });
-                           </script>
+                                        colorLabels.forEach(l => l.style.border = '2px solid transparent');  // Reset all borders
+                                        this.style.border = '2px solid black';  // Highlight the selected color
+                                    });
+                                });
+                            </script>
                         </div>
+
                         <div class="women">
-                           <input type="hidden" name="product_id" value="{{ $product->id }}">
-                           <button type="submit" class="my-cart-b item_add">Add To Cart</button>
-                           <button type="button" id="buyNowButton" class="mybutton mybutton1">Buy Now</button>
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button type="submit" name="action" value="add_to_cart" class="my-cart-b item_add">Add To Cart</button>
+                            <button type="submit" name="action" value="buy_now" class="mybutton mybutton1">Buy Now</button>
                         </div>
-                     </form>
+                    </form>
+
                   </div>
                   <div class="clearfix"> </div>
                </div>
@@ -446,50 +439,6 @@ Product Single Page
     });
 </script>
 <!--quantity-->
-
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-        var buyNowButton = document.getElementById('buyNowButton');
-
-        buyNowButton.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent default form submission
-
-            var product_id = document.querySelector('input[name="product_id"]').value;
-            var color_id = document.getElementById('selectedColorId').textContent.trim(); // Trim whitespace
-
-            if (color_id === "") { // Check if color_id is empty
-                alert('Color is required.');
-                return; // Stop further execution
-            }
-
-            var formData = new FormData();
-            formData.append('product_id', product_id);
-            formData.append('color_id', color_id);
-            formData.append('quantity', document.querySelector('input[name="quantity"]').value);
-            formData.append('_token', document.querySelector('input[name="_token"]').value); // CSRF token
-
-            // AJAX request using Fetch API
-            fetch('{{ url("/product/buy/now") }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest' // Optional, useful for identifying AJAX requests in Laravel
-                }
-            })
-            .then(function (response) {
-                if (response.ok) {
-                    window.location.href = '{{ url("/checkout") }}'; // Redirect to checkout page
-                } else {
-                    throw new Error('Color is required.');
-                }
-            })
-            .catch(function (error) {
-                alert(error.message);
-            });
-        });
-    });
-</script>
-<!--product buy now -->
 
 @endsection
 

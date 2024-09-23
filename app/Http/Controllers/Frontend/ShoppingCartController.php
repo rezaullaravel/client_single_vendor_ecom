@@ -17,24 +17,45 @@ class ShoppingCartController extends Controller
     }//end method
 
 
+    //buy now or add to cart
+    public function buyNowOrAddToCart(Request $request){
+        // Get the action type
+        $action = $request->input('action');
 
-    //product add to cart
-    public function productAddToCart(Request $request){
-        // $request->validate([
-        //     'color_id'=>'required'
-        // ],[
-        //     'color_id.required'=>'Please select color.'
-        // ]);
+        if ($action === 'add_to_cart'){
+            if($request->color_id==null){
+                return redirect()->back()->with('error','You have to select color.');
+            }
 
+                $product = ShoppingCart::where('user_id',Auth::user()->id)->where('product_id',$request->product_id)->where('color_id',$request->color_id)->first();
 
-        if($request->color_id==null){
-            return redirect()->back()->with('error','You have to select color.');
-        }
+                if($product){
+                    return redirect()->back()->with('error','This product has been already added to shopping cart');
+                } else {
+                    ShoppingCart::insert([
+                        'user_id' => Auth::user()->id,
+                        'product_id' => $request->product_id,
+                        'color_id' => $request->color_id,
+                        'quantity' => $request->quantity,
+                    ]);
 
+                    return redirect()->back()->with('message','Product added to shopping cart');
+                }
+        }//end if section
+
+        if ($action === 'buy_now') {
+            if($request->color_id==null){
+                return redirect()->back()->with('error','You have to select color.');
+            }
             $product = ShoppingCart::where('user_id',Auth::user()->id)->where('product_id',$request->product_id)->where('color_id',$request->color_id)->first();
 
             if($product){
-                return redirect()->back()->with('error','This product has been already added to shopping cart');
+                $product->update([
+                    'user_id' => Auth::user()->id,
+                    'product_id' => $request->product_id,
+                    'color_id' => $request->color_id,
+                    'quantity' => $request->quantity,
+                ]);
             } else {
                 ShoppingCart::insert([
                     'user_id' => Auth::user()->id,
@@ -42,10 +63,10 @@ class ShoppingCartController extends Controller
                     'color_id' => $request->color_id,
                     'quantity' => $request->quantity,
                 ]);
-
-                return redirect()->back()->with('message','Product added to shopping cart');
             }
 
+            return redirect('/checkout');
+        }//end if section
     }//end method
 
 
