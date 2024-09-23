@@ -196,7 +196,7 @@ Product Single Page
                                 @foreach ($product_reviews as $review)
                                     <div class="reviews-top">
                                         <div class="reviews-left">
-                                        <img src="{{asset('/')}}frontend/images/men3.jpg" alt=" " class="img-responsive">
+                                        <img src="{{asset($review->user->image)}}" alt=" " class="img-responsive">
                                         </div>
                                         <div class="reviews-right">
 
