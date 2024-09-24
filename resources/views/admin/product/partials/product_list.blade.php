@@ -21,7 +21,7 @@
                   <a href="{{ url('/admin/product-featured/active',$product->id) }}" class="bg-danger btn-sm">Deactive</a>
                 @endif
            </td>
-           
+
            <td>
               @if ($product->today_deal==1)
                 <a href="{{ url('/admin/today-deal/deactive',$product->id) }}" class="bg-success btn-sm">Active</a>
@@ -44,7 +44,7 @@
             <td>
                 <a href="{{ url('admin/product/view', $product->id) }}" class="btn btn-primary btn-sm" title="view"><i class="fa fa-eye"></i></a>
                 <a href="{{ url('admin/product/edit', $product->id) }}" class="btn btn-success btn-sm" title="edit"><i class="fa fa-pen"></i></a>
-                <a href="{{ url('admin/product/delete', $product->id) }}" class="btn btn-danger btn-sm" title="delete"><i class="fa fa-trash"></i></a>
+                <a href="{{ url('admin/product/delete', $product->id) }}" class="btn btn-danger btn-sm" title="delete" onclick="confirmation(event)"><i class="fa fa-trash"></i></a>
             </td>
         </tr>
     @endforeach

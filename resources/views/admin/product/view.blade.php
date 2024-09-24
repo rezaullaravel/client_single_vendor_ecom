@@ -72,6 +72,17 @@
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <th width="20%" class="text-center">Size</th>
+                                        <td>
+                                            <ul>
+                                                @foreach($sizeNames as $sizeName)
+                                                    <li>{{ $sizeName }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
+                                    </tr>
+
 
                                     <tr>
                                         <th width="20%" class="text-center">Description</th>

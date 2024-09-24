@@ -103,6 +103,7 @@
                                     <th>Unit Price</th>
                                     <th>Total Price</th>
                                     <th>Color</th>
+                                    <th>Size</th>
                                 </tr>
                             </thead>
 
@@ -131,6 +132,7 @@
                                               $detail->product_quantity;
                                         @endphp
                                         <td>{{ $detail->color->name }}</td>
+                                        <td>{{ $detail->size->size }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

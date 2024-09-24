@@ -38,6 +38,12 @@ public function colors()
     return $this->belongsToMany(Color::class, 'color_products', 'product_id', 'color_id');
 }
 
+public function sizes()
+{
+    return $this->belongsToMany(Size::class, 'product_sizes', 'product_id', 'size_id');
+}
+
+
 
 
 

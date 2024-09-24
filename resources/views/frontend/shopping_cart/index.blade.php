@@ -64,6 +64,7 @@ Shopping Cart
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Color</th>
+                                <th>Size</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -97,6 +98,7 @@ Shopping Cart
                                         @endforeach
                                     </select>
                                 </td>
+                                <td>{{ $product->size->size }}</td>
                                 <td>
                                     <a href="{{ url('cart-item/delete', $product->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');" title="Remove"><i class="las la-trash"></i></a>
                                 </td>

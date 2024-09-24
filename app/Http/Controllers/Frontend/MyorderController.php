@@ -11,7 +11,7 @@ class MyorderController extends Controller
 {
     //customer order list
     public function  index(){
-        $myOrders = Order::where('user_id',Auth::user()->id)->get();
+        $myOrders = Order::where('user_id',Auth::user()->id)->orderBy('id','desc')->get();
         return view('frontend.user.my_order.index',compact('myOrders'));
     }//end method
 

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Image;
+use App\Models\Size;
 use App\Models\Brand;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ProductSize;
 use App\Models\ColorProduct;
 use Illuminate\Http\Request;
 use App\Models\ProductMultiImage;
@@ -20,7 +22,8 @@ class ProductController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $colors = Color::all();
-        return view('admin.product.add',compact('categories','brands','colors'));
+        $sizes = Size::all();
+        return view('admin.product.add',compact('categories','brands','colors','sizes'));
     }//end method
 
 
@@ -138,6 +141,17 @@ class ProductController extends Controller
                 'color_id'=>$id,
             ]);
         }
+
+        //multiple size insert
+        if(!empty($request->size_id )){
+            foreach($request->size_id as $id){
+                ProductSize::create([
+                    'product_id'=>$product->id,
+                    'size_id'=>$id,
+                ]);
+            }
+        }
+
 
         return redirect()->back()->with('message','Product added successfully');
     }//end method
@@ -262,8 +276,10 @@ class ProductController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $colors = Color::all();
+        $sizes = Size::all();
         $productColors = ColorProduct::where('product_id', $id)->pluck('color_id')->toArray();
-        return view('admin.product.edit',compact('product','categories','brands','colors','productColors'));
+        $productSizes = ProductSize::where('product_id', $id)->pluck('size_id')->toArray();
+        return view('admin.product.edit',compact('product','categories','brands','colors','productColors','sizes','productSizes'));
     }//end method
 
 
@@ -361,6 +377,17 @@ class ProductController extends Controller
             ]);
         }
 
+        //update sizes
+        if(!empty($request->size_id )){
+            ProductSize::where('product_id', $request->id)->delete();
+            foreach($request->size_id as $sizeId){
+                ProductSize::create([
+                    'product_id' => $product->id,
+                    'size_id' => $sizeId,
+                ]);
+            }
+        }
+
         return redirect('/admin/product/manage')->with('message','Product updated successfully');
     }//end method
 
@@ -400,8 +427,9 @@ class ProductController extends Controller
          $product = Product::with('colors')->find($id);
         // Access the product's colors
         $colorNames = $product->colors->pluck('name');
+        $sizeNames = $product->sizes->pluck('size');
 
-        return view('admin.product.view',compact('product','colorNames'));
+        return view('admin.product.view',compact('product','colorNames','sizeNames'));
 
     }//end method
 

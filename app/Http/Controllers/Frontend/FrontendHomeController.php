@@ -34,6 +34,9 @@ class FrontendHomeController extends Controller
                    Product::where('id',$id)->increment('product_view');
 
         $colors = $product->colors->pluck('name', 'id','code');
+        $sizes = $product->sizes->pluck('size', 'id');
+
+
         $product_reviews = Review::where('product_id',$product->id)->get();
 
         $related_products = Product::where('category_id', $product->category_id)
@@ -41,7 +44,7 @@ class FrontendHomeController extends Controller
         ->limit(4)
         ->get();
 
-        return view('frontend.product.product_single',compact('product','colors','product_reviews','related_products'));
+        return view('frontend.product.product_single',compact('product','colors','sizes','product_reviews','related_products'));
     }//end method
 
 

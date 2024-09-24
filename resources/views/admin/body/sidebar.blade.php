@@ -268,6 +268,62 @@
           </li>
           {{-- faq --}}
 
+          {{-- privacy policy --}}
+          <li class="nav-item {{ (request()->is('admin/Privacy*')) ? 'menu-open' : '' }}">
+            <a href="{{ url('admin/Privacy-policy') }}" class="nav-link {{ (request()->is('admin/Privacy*')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-regular fa-hand-point-right"></i>
+              <p>
+                Privacy And Policy
+              </p>
+            </a>
+          </li>
+          {{-- privacy policy --}}
+
+
+          {{-- terms conditon --}}
+          <li class="nav-item {{ (request()->is('admin/terms*')) ? 'menu-open' : '' }}">
+            <a href="{{ url('admin/terms-conditon') }}" class="nav-link {{ (request()->is('admin/terms*')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-regular fa-hand-point-right"></i>
+              <p>
+                Terms And Conditons
+              </p>
+            </a>
+          </li>
+          {{-- terms conditon --}}
+
+          {{-- returns refund --}}
+          <li class="nav-item {{ (request()->is('admin/returns*')) ? 'menu-open' : '' }}">
+            <a href="{{ url('admin/returns-refunds') }}" class="nav-link {{ (request()->is('admin/returns*')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-regular fa-hand-point-right"></i>
+              <p>
+                Returns And Refunds
+              </p>
+            </a>
+          </li>
+          {{-- returns refund --}}
+
+          {{-- payment methods --}}
+          <li class="nav-item {{ (request()->is('admin/payment*')) ? 'menu-open' : '' }}">
+            <a href="{{ url('admin/payment-method') }}" class="nav-link {{ (request()->is('admin/payment*')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-regular fa-hand-point-right"></i>
+              <p>
+                Payment Methods
+              </p>
+            </a>
+          </li>
+          {{-- payment methods --}}
+
+          {{-- shipping info --}}
+          <li class="nav-item {{ (request()->is('admin/shipping*')) ? 'menu-open' : '' }}">
+            <a href="{{ url('admin/shipping-info') }}" class="nav-link {{ (request()->is('admin/shipping*')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-regular fa-hand-point-right"></i>
+              <p>
+                Shipping Info
+              </p>
+            </a>
+          </li>
+          {{-- shipping info --}}
+
           {{-- setting --}}
           <li class="nav-item {{ (request()->is('admin/setting*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ (request()->is('admin/setting*')) ? 'active' : '' }}">

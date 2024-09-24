@@ -20,6 +20,8 @@
                     <li><a href="{{ url('checkout') }}">Checkout</a></li>
                     <li><a href="{{ url('/login') }}">Login</a></li>
                     <li><a href="{{ url('/register') }}"> Create Account </a></li>
+                    <li><a href="{{ route('shipping.info') }}"> Shipping Info </a></li>
+                    <li><a href="{{ route('payment.method') }}"> Payment Method </a></li>
                 </ul>
             </div>
             <div class="col-md-3 footer-grid">
@@ -30,6 +32,9 @@
                     <li><a href="{{ route('contact') }}">Contact</a></li>
                     <li><a href="{{ url('order-tracking') }}">Order Tracking</a></li>
                     <li><a href="{{ route('faq') }}">Faq</a></li>
+                    <li><a href="{{ route('privacy.policy') }}">Privacy & Policy</a></li>
+                    <li><a href="{{ route('terms.condition') }}">Terms & Condition</a></li>
+                    <li><a href="{{ route('returns.refunds') }}">Returns & Refund</a></li>
                 </ul>
             </div>
             <div class="col-md-3 footer-grid foot">

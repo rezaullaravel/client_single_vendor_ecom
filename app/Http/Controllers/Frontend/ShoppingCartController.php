@@ -36,6 +36,7 @@ class ShoppingCartController extends Controller
                         'user_id' => Auth::user()->id,
                         'product_id' => $request->product_id,
                         'color_id' => $request->color_id,
+                        'size_id' => $request->size_id ?? null,
                         'quantity' => $request->quantity,
                     ]);
 
@@ -44,6 +45,7 @@ class ShoppingCartController extends Controller
         }//end if section
 
         if ($action === 'buy_now') {
+
             if($request->color_id==null){
                 return redirect()->back()->with('error','You have to select color.');
             }
@@ -54,6 +56,7 @@ class ShoppingCartController extends Controller
                     'user_id' => Auth::user()->id,
                     'product_id' => $request->product_id,
                     'color_id' => $request->color_id,
+                    'size_id' => $request->size_id ?? null,
                     'quantity' => $request->quantity,
                 ]);
             } else {
@@ -61,6 +64,7 @@ class ShoppingCartController extends Controller
                     'user_id' => Auth::user()->id,
                     'product_id' => $request->product_id,
                     'color_id' => $request->color_id,
+                    'size_id' => $request->size_id ?? null,
                     'quantity' => $request->quantity,
                 ]);
             }

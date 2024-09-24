@@ -157,6 +157,23 @@ Product Single Page
                             </script>
                         </div>
 
+                        @if(!$sizes->isEmpty())
+                        <div class="color-quality">
+                            <h6>Size</h6>
+
+                                <div style="display: inline-block; margin-right: 10px;">
+                                    <select name="size_id" id="" class="form-control">
+                                        <option value="" selected disabled>Select</option>
+                                        @foreach($sizes as $id=>$size)
+                                        <option value="{{ $id }}">{{ $size }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                        </div>
+                        @endif
+
+
                         <div class="women">
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <button type="submit" name="action" value="add_to_cart" class="my-cart-b item_add">Add To Cart</button>

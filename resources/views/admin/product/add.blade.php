@@ -160,7 +160,7 @@
 
 
                           <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                <div class="form-group">
                                    <label>Stock Availability</label>
                                    <select name="stock_availability" class="form-control">
@@ -170,7 +170,7 @@
                                </div>
                             </div>
 
-                            <div class="col-sm-6">
+                             <div class="col-sm-4">
 
                                 <div class="form-group">
                                     <label>Select Color<span class="text-danger">*</span></label>
@@ -185,6 +185,20 @@
                                     <span class="text-danger">{{ $message }}</span>
 
                                    @enderror
+                                </div>
+                             </div>
+
+                             <div class="col-sm-4">
+
+                                <div class="form-group">
+                                    <label>Select Size<span class="text-danger"></span></label>
+                                    <select name="size_id[]" class="select2 form-control" multiple="multiple" data-placeholder="Select Size" style="width: 100%;">
+                                        @foreach ($sizes as $size)
+                                         <option value="{{ $size->id  }}">{{ $size->size }}</option>
+                                        @endforeach
+
+                                    </select>
+
                                 </div>
                              </div>
                           </div>{{-- row --}}

@@ -23,7 +23,12 @@ use App\Http\Controllers\Admin\PickupPointController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\ShippingInfoController;
+use App\Http\Controllers\Admin\PrivacyPolicyController;
+use App\Http\Controllers\Admin\ReturnRefundsController;
 use App\Http\Controllers\Admin\DeliveryChargeController;
+use App\Http\Controllers\Admin\PaymentMethodsController;
+use App\Http\Controllers\Admin\TermsConditionController;
 use App\Http\Controllers\Frontend\UserProfileController;
 use App\Http\Controllers\Frontend\FrontContactController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
@@ -31,6 +36,10 @@ use App\Http\Controllers\Frontend\ShoppingCartController;
 use App\Http\Controllers\Frontend\OrderTrackingController;
 use App\Http\Controllers\Frontend\ProductBuyNowController;
 use App\Http\Controllers\Admin\AdminContactMessageController;
+use App\Http\Controllers\Frontend\FrontPrivacyPolicyController;
+use App\Http\Controllers\Frontend\FrontReturnsRefundsController;
+use App\Http\Controllers\Frontend\FrontTermsConditionController;
+use App\Http\Controllers\Frontend\FrontPaymentShippingController;
 
 
 
@@ -188,6 +197,27 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::post('/faq-update/{id}',[AdminFaqController::class,'update'])->name('admin.faq.update');
     Route::get('/faq-delete/{id}',[AdminFaqController::class,'delete'])->name('admin.faq.delete');
 
+    //privacy and policy
+    Route::get('/Privacy-policy',[PrivacyPolicyController::class,'index']);
+    Route::post('/Privacy-policy-update/{id}',[PrivacyPolicyController::class,'update'])->name('privacy.policy.update');
+
+    //terms and condition
+    Route::get('/terms-conditon',[TermsConditionController::class,'index']);
+    Route::post('/terms-conditon-update/{id}',[TermsConditionController::class,'update'])->name('terms.conditon.update');
+
+    //returns refund
+    Route::get('/returns-refunds',[ReturnRefundsController::class,'index']);
+    Route::post('/returns-refund-update/{id}',[ReturnRefundsController::class,'update'])->name('returns.refunds.update');
+
+    //payment method
+    Route::get('/payment-method',[PaymentMethodsController::class,'index']);
+    Route::post('/payment-method-update/{id}',[PaymentMethodsController::class,'update'])->name('payment.method.update');
+
+    //shipping info
+    Route::get('/shipping-info',[ShippingInfoController::class,'index']);
+    Route::post('/shipping-info-update/{id}',[ShippingInfoController::class,'update'])->name('shipping.info.update');
+
+
 
 });
 
@@ -227,6 +257,21 @@ Route::post('/insert/message',[FrontContactController::class,'insertMessage'])->
 
 //Faq
 Route::get('/faq',[FaqController::class,'index'])->name('faq');
+
+//privacy policy
+Route::get('/front-privacy-policy',[FrontPrivacyPolicyController::class,'index'])->name('privacy.policy');
+
+//terms conditon
+Route::get('/front-terms-condition',[FrontTermsConditionController::class,'index'])->name('terms.condition');
+
+//returns refund
+Route::get('/front-returns-refund',[FrontReturnsRefundsController::class,'index'])->name('returns.refunds');
+
+//payment method
+Route::get('/front-payment-method',[FrontPaymentShippingController::class,'pmethod'])->name('payment.method');
+
+//shipping info
+Route::get('/front-shipping-info',[FrontPaymentShippingController::class,'sinfo'])->name('shipping.info');
 
 
 //frontend protected route
